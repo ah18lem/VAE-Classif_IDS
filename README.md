@@ -10,7 +10,7 @@ This project implements the federated learning framework described in the articl
 ```bash
 pip install -r requirements.txt
 
-bash```
+```
 
 
 3. Open constantes.py to configure your simulation parameters. Here you can set:
