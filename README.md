@@ -8,8 +8,9 @@ This project implements the federated learning framework described in the articl
 2. Install the required dependencies using the provided `requirements.txt` file:
 
 ```bash
-pip install -r requirements.txt
-```
+pip install -r requirements.txt```
+
+
 3. Open constantes.py to configure your simulation parameters. Here you can set:
 
 -Number of clients (NUM_CLIENTS).
