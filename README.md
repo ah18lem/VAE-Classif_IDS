@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 ```bash
 python server.py
-
+```
 The server manages and coordinates the entire federated learning simulation.
 
 
