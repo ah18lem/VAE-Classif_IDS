@@ -15,12 +15,20 @@ pip install -r requirements.txt
 
 3. Open constantes.py to configure your simulation parameters. Here you can set:
 
--Number of clients (NUM_CLIENTS).
--Fraction of clients used for training and evaluation (FRACTION_FIT, FRACTION_EVALUATE).
--Minimum clients required for training and evaluation (MIN_FIT_CLIENTS, MIN_EVALUATE_CLIENTS, MIN_AVAILABLE_CLIENTS).
--Choice between Variational Autoencoder (VAE) or classic Autoencoder (VAE=True or False).
--Batch size, learning rate, and other hyperparameters.
--Select the dataset you want to use by uncommenting the corresponding block (BOT_IoT, Wustl-2020, or SCADA) and commenting out the others. These blocks specify dataset paths, class counts, epochs, architecture layers, and other relevant settings.
+### Configuration Parameters
+
+- **Number of clients:** `NUM_CLIENTS`
+- **Fraction of clients used for training and evaluation:** `FRACTION_FIT`, `FRACTION_EVALUATE`
+- **Minimum clients required for training and evaluation:** `MIN_FIT_CLIENTS`, `MIN_EVALUATE_CLIENTS`, `MIN_AVAILABLE_CLIENTS`
+- **Choice between Variational Autoencoder (VAE) or classic Autoencoder:** `VAE=True` or `False`
+- **Batch size, learning rate, and other hyperparameters**
+- **Dataset selection:**
+  - Uncomment the corresponding dataset block to use:
+    - `BOT_IoT`
+    - `Wustl-2020`
+    - `SCADA`
+  - Comment out the other dataset blocks.
+  - Each block specifies dataset paths, class counts, epochs, architecture layers, and other relevant settings.
 
 4. Run the server to start the simulation:
 
