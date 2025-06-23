@@ -1,6 +1,6 @@
 # VAE-Classif_IDS
 ## Overview 
-This project implements the federated learning framework described in the article "A Two-Stage Federated Learning Method for Intrusion Detection in IoMT Using Variational Autoencoders and Server Classification." It provides implementations for both the classical Autoencoder and the Variational Autoencoder (VAE) architectures. The framework facilitates federated learning simulations via the Flower (flwr) platform, leveraging TensorFlow for client-side model training and server-side aggregation.
+This project implements the federated learning framework described in the article "Federated Intrusion Detection in Medical IoT: Client-Side Feature Learning with Variational Autoencoders vs Autoencoders" It provides implementations for both the classical Autoencoder and the Variational Autoencoder (VAE) architectures. The framework facilitates federated learning simulations via the Flower (flwr) platform, leveraging TensorFlow for client-side model training and server-side aggregation.
 
 ## Usage
 1. Clone this repository to your local machine.
@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ```
 
 
-3. Open constantes.py to configure your simulation parameters. Here you can set:
+3. Open **constantes.py** to configure your simulation parameters. Here you can set:
 
 ### Configuration Parameters
 
