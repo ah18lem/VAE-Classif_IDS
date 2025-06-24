@@ -105,7 +105,6 @@ def split_balanced_datasets_clients(train_data, labels,nbrClients=10):
 
 def split_train_server_clients(ratioLabel=constantes.RATIO_LABEL):
     train_data, test_data, train_labels, test_labels ,combined_data= data_preprocessing()
-    # Split the data into training and sampled training sets
     train_data_sampled, client_data, train_labels_sampled, client_labels = train_test_split(train_data, train_labels, train_size=ratioLabel, stratify=train_labels, random_state=42)
     train_labels_sampled = one_hot_encode_column(train_labels_sampled)
     combined_labels= pd.concat([train_labels, test_labels], axis=0)
@@ -122,8 +121,6 @@ def split_train_server_clients(ratioLabel=constantes.RATIO_LABEL):
 def latentSpace_UMAP(mu, test_labels):
     umap_model = umap.UMAP(n_components=2)
     mu_umap = umap_model.fit_transform(mu)
-
-    # Plot the UMAP projection
     plt.figure(figsize=(10, 10))
     plt.scatter(mu_umap[:, 0], mu_umap[:, 1], c=test_labels, cmap="brg")
     plt.xlabel("UMAP Dimension 1")
@@ -135,8 +132,6 @@ def latentSpace_UMAP(mu, test_labels):
 def latentSpace_TSNE(mu, test_labels):   
     tsne_model = TSNE(n_components=2, random_state=42)
     mu_tsne = tsne_model.fit_transform(mu)
-
-    # Plot the t-SNE projection
     plt.figure(figsize=(10, 10))
     plt.scatter(mu_tsne[:, 0], mu_tsne[:, 1], c=test_labels, cmap="brg")
     plt.xlabel("t-SNE Dimension 1")
