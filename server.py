@@ -44,11 +44,9 @@ for i in range(len(FakeLabels)):
     print(encoded_label.shape)
     FakeLabels[i] = pd.DataFrame(encoded_label)
 
-# Get the actual class names before encoding
 class_names = np.unique(test_labels)
-label_encoder = LabelEncoder()
-# Fit LabelEncoder to your string labels
 label_encoder.fit(test_labels)
+
 # Transform string labels to class indices
 test_labels_encoded = label_encoder.transform(test_labels)
 
@@ -61,7 +59,7 @@ class modifiedFedAVG(fl.server.strategy.FedAvg):
         if self.on_fit_config_fn is not None:
             # Custom fit config function provided
             config = self.on_fit_config_fn(server_round)
-        # Au lieu de retourner aux clients les parametres aggregated , on entraine dabord
+        # Instead of returning the aggregated parameters to the clients, we first train
         net =model.AutoencoderWithClassifier(inputdim,isServer=True, vae=constantes.VAE)
         net.model.set_weights(parameters_to_ndarrays(parameters))     
         net.train(train_data_server, train_labels_server, constantes.EPOCHS_SERVEUR)
@@ -94,10 +92,9 @@ def evaluate(server_round: int, parameters: fl.common.NDArrays, config: Dict[str
 
     print("Round number : " ,server_round)
     report=classification_report(test_labels_encoded, predictions, target_names=class_names,zero_division=1) 
-    # Print confusion matrix
     cm = confusion_matrix(test_labels_encoded, predictions)
     print("Confusion Matrix:")
-    print(pd.DataFrame(cm, columns=class_names, index=class_names))  # Print confusion matrix with class names
+    print(pd.DataFrame(cm, columns=class_names, index=class_names)) 
     print ("classification report")
     print(report)
     return mean_classification_loss, {
