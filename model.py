@@ -14,14 +14,13 @@ class Sampling(layers.Layer):
 
    def __init__(self, isServer=False, **kwargs):
        super().__init__()
-       self.isServer = isServer  # Set the server/client flag
-       self.seed_generator = keras.random.SeedGenerator(1337)
+       self.isServer = isServer  
 
    def call(self, inputs):
        z_mean, z_log_var = inputs
        batch = ops.shape(z_mean)[0]
        dim = ops.shape(z_mean)[1]
-       epsilon = keras.random.normal(shape=(batch, dim), seed=self.seed_generator)
+       epsilon = keras.random.normal(shape=(batch, dim))
        
        # Compute the KL divergence
        kl_loss = -0.5 * (1 + z_log_var - ops.square(z_mean) - ops.exp(z_log_var))
@@ -29,15 +28,10 @@ class Sampling(layers.Layer):
 
        # If the model is a client, add the KL loss
        if not self.isServer:
-           # Multiply the KL loss by the dynamic factor
-           print("client kl factor")
-           print(dynamic_kl_factor)
-
            dynamic_kl_loss = dynamic_kl_factor * kl_loss
-           # Add the KL loss to the total loss
            self.add_loss(dynamic_kl_loss)
 
-       # Return the latent variable z
+      
        return z_mean + ops.exp(0.5 * z_log_var) * epsilon
 
 
@@ -50,14 +44,11 @@ class AutoencoderWithClassifier(tf.keras.Model):
         isServer=True,
         encoder_layer_sizes=constantes.ENCODER_LAYERS,
         decoder_layer_sizes=constantes.DECODER_LAYERS,
-        seed=42,
         vae=False,
         kl_target=1,
        
     ):
         super().__init__()
-
-        initialiser = keras.initializers.GlorotUniform(seed=seed)
         input_layer = keras.Input(shape=(input_dim,))
   
         self.kl_target = kl_target
@@ -69,14 +60,14 @@ class AutoencoderWithClassifier(tf.keras.Model):
             self.kl_loss_factor = None
 
         if vae:
-            z, latent_mean, latent_log_var = self.build_vae_encoder(input_layer, encoder_layer_sizes, initialiser, isServer)
+            z, latent_mean, latent_log_var = self.build_vae_encoder(input_layer, encoder_layer_sizes, isServer)
             self.latent_mean = latent_mean
             self.latent_log_var = latent_log_var
             encoded = z
             encoder = keras.Model(input_layer, [latent_mean, latent_log_var, z], name="encoder")
             self.encoder = encoder
         else:
-            encoded = self.build_encoder(input_layer, encoder_layer_sizes, initialiser, isServer)
+            encoded = self.build_encoder(input_layer, encoder_layer_sizes, isServer)
             encoder = keras.Model(input_layer, encoded, name="encoder")
             self.encoder = encoder
 
@@ -88,7 +79,6 @@ class AutoencoderWithClassifier(tf.keras.Model):
                 activation="relu",
                 trainable=(not isServer),
                 name=f"decoder{i + 1}",
-                kernel_initializer=initialiser,
             )(x)
            
         x = layers.Dense(
@@ -96,16 +86,14 @@ class AutoencoderWithClassifier(tf.keras.Model):
             activation="relu",
             name="decoder",
             trainable=(not isServer),
-            kernel_initializer=initialiser,
         )(x)
         decoded = x
 
-        # Classification layer
+       
         classification_layer = layers.Dense(
             constantes.NUM_CLASSES,
             activation="softmax",
             name="classification_layer",
-            kernel_initializer=initialiser,
             trainable=isServer,
         )(encoded)
 
@@ -143,29 +131,27 @@ class AutoencoderWithClassifier(tf.keras.Model):
             epochs=epochs,
             batch_size=constantes.BATCH_SIZE,
             shuffle=False,
-            callbacks=callbacks,  # Pass the callback here
+            callbacks=callbacks, 
         )
 
-    def build_encoder(self, x, encoder_layer_sizes, initialiser, isServer):
+    def build_encoder(self, x, encoder_layer_sizes, isServer):
         for i, layer_size in enumerate(encoder_layer_sizes):
             x = layers.Dense(
                 layer_size,
                 activation="relu",
                 trainable=True,
                 name=f"encoder{i + 1}",
-                kernel_initializer=initialiser,
             )(x)
           
         return x
 
-    def build_vae_encoder(self, x, encoder_layer_sizes, initialiser, isServer):
+    def build_vae_encoder(self, x, encoder_layer_sizes,isServer):
         for i, layer_size in enumerate(encoder_layer_sizes[:-1]):
             x = layers.Dense(
                 layer_size,
                 activation="relu",
                 trainable=True,
                 name=f"encoder{i + 1}",
-                kernel_initializer=initialiser,
             )(x)
         latent_mean = layers.Dense(encoder_layer_sizes[-1], name="latent_mean", trainable=True, kernel_initializer=initialiser)(x)
         latent_log_var = layers.Dense(encoder_layer_sizes[-1], name="latent_log_var", trainable=True, kernel_initializer=initialiser)(x)
