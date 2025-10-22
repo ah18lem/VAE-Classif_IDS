@@ -26,7 +26,6 @@ pip install -r requirements.txt
   - Uncomment the corresponding dataset block to use:
     - `BOT_IoT`
     - `Wustl-2020`
-    - `SCADA`
   - Comment out the other dataset blocks.
   - Each block specifies dataset paths, class counts, epochs, architecture layers, and other relevant settings.
 
