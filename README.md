@@ -135,9 +135,11 @@ The goal is to deploy the final encoder-classifier model on the ESP32.
 
 Before deployment on the ESP32, the following preparation steps were performed on the PC:
 
--an ESP32-compatible test set was prepared;
--the selected .tflite model was converted into a C header file;
--the ESP32-compatible test data header was generated.
+-An ESP32-compatible test set was prepared.
+
+-The selected .tflite model was converted into a C header file.
+
+-The ESP32-compatible test data header was generated.
 
 The resulting files are provided in the deployment directory:
 
