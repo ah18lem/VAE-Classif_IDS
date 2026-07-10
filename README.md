@@ -143,9 +143,10 @@ Before deployment on the ESP32, the following preparation steps were performed o
 
 The resulting files are provided in the deployment directory:
 
+```text
 model_data.h
 esp32_test_data.h
-
+```
 
 ---
 
