@@ -38,6 +38,94 @@ The server manages and coordinates the entire federated learning simulation.
 
 
 
+# Federated Learning on Raspberry Pi
+
+This project runs a real federated learning setup using a PC as the Flower server and Raspberry Pi devices as federated clients.
+
+## PC Server
+
+### Expected data
+
+Place the following files in the `data/` directory:
+
+```text
+server_train_data.csv
+server_train_labels.csv
+global_test_data.csv
+global_test_labels.csv
+class_names.csv
+```
+
+### Required files on the server
+
+The PC server must contain:
+
+```text
+server.py
+model.py
+data_loader.py
+constantes.py
+requirements.txt
+data/
+```
+
+### Run the server
+
+From the project directory, run:
+
+```bash
+python server.py
+```
+
+The server will wait for the Raspberry Pi clients to connect.
+
+---
+
+## Raspberry Pi Clients
+
+Each Raspberry Pi must contain the client code and its own local training data.
+
+### Required files on each Raspberry Pi
+
+Copy the following files to each Raspberry Pi:
+
+```text
+raspberry_client.py
+model.py
+data_loader.py
+constantes.py
+requirements.txt
+data/client_X_train.csv
+```
+
+`X` is the client number: `0`, `1`, or `2`.
+
+Example:
+
+```text
+Raspberry Pi 1 -> data/client_0_train.csv
+Raspberry Pi 2 -> data/client_1_train.csv
+Raspberry Pi 3 -> data/client_2_train.csv
+```
+
+### Run each client
+
+On each Raspberry Pi, run:
+
+```bash
+python3 raspberry_client.py --client_id X --server IP_DU_PC:8080
+```
+
+Replace:
+
+```text
+X        -> client ID: 0, 1, or 2
+IP_DU_PC -> IP address of the PC server
+```
+
+
+
+
 
 
 
