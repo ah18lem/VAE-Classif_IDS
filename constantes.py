@@ -1,46 +1,49 @@
+from pathlib import Path
 
-NUM_CLIENTS=10
-FRACTION_FIT=1  
-FRACTION_EVALUATE=1  
-MIN_FIT_CLIENTS=10 
-MIN_EVALUATE_CLIENTS=10
-MIN_AVAILABLE_CLIENTS=10
-VAE=True
-BATCH_SIZE=64
-LEARNING_RATE=0.0001
- #----------BOT_IoT--------------# 
+# Dossiers projet
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+RESULTS_DIR = BASE_DIR / "results"
+MODELS_DIR = BASE_DIR / "models"
 
-#TRAINING_DATA="train_bot-iot.csv"
-#TESTING_DATA="test_bot-iot.csv"
-#NUM_CLASSES=5
-#RATIO_LABEL=0.1
-#EPOCHS_CLIENT=5
-#EPOCHS_SERVEUR=20
-#MULTICLASS_TARGET_COL="category"
-#ONE_HOT_ENCODING_LIST=['proto']
-#DELETE_LIST=["attack","subcategory","saddr" ,"daddr"]
-#ENCODER_LAYERS=[14,14,10]
-#DECODER_LAYERS=[14,14]
-#NUM_ROUNDS=30
+for directory in [DATA_DIR, RESULTS_DIR, MODELS_DIR]:
+    directory.mkdir(exist_ok=True)
 
+# Paramètres FD
+SEED = 42
+NUM_CLIENTS = 3
+SERVER_ADDRESS = "0.0.0.0:8080"
 
-#----------Wustl-2020--------------# 
-# TRAINING_DATA="train_wustl.csv"
-# TESTING_DATA="test_wustl.csv"
-# NUM_CLASSES=3
-# RATIO_LABEL=0.3
-# EPOCHS_CLIENT=5
-# EPOCHS_SERVEUR=20
-# ENCODER_LAYERS=[30,30,20]
-# DECODER_LAYERS=[30,30]
-# NUM_ROUNDS=20
-# MULTICLASS_TARGET_COL="Attack Category"
+# Stratégie Flower
+FRACTION_FIT = 1.0
+FRACTION_EVALUATE = 0.0
+MIN_FIT_CLIENTS = 3
+MIN_EVALUATE_CLIENTS = 0
+MIN_AVAILABLE_CLIENTS = 3
 
+# Hyperparamètres
+VAE = True
+BATCH_SIZE = 64
+LEARNING_RATE = 0.0001
+NUM_CLASSES = 5
+EPOCHS_CLIENT = 5
+EPOCHS_SERVEUR = 20
+NUM_ROUNDS = 30
 
+# Architecture modèle
+ENCODER_LAYERS = [14, 14, 10]
+DECODER_LAYERS = [14, 14]
 
+# Données serveur
+SERVER_TRAIN_DATA = DATA_DIR / "server_train_data.csv"
+SERVER_TRAIN_LABELS = DATA_DIR / "server_train_labels.csv"
+GLOBAL_TEST_DATA = DATA_DIR / "global_test_data.csv"
+GLOBAL_TEST_LABELS = DATA_DIR / "global_test_labels.csv"
+CLASS_NAMES_FILE = DATA_DIR / "class_names.csv"
 
-
-
-
-
-
+# Données clients
+CLIENT_DATA_FILES = {
+    0: DATA_DIR / "client_0_train.csv",
+    1: DATA_DIR / "client_1_train.csv",
+    2: DATA_DIR / "client_2_train.csv",
+}
