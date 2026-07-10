@@ -123,6 +123,85 @@ X        -> client ID: 0, 1, or 2
 IP_DU_PC -> IP address of the PC server
 ```
 
+# ESP32 Inference
+
+This part explains how to prepare and run the ESP32 inference test.
+
+The goal is to deploy the final encoder-classifier model on the ESP32. 
+
+---
+
+## Preparation workflow
+
+Before using the ESP32, the following steps are performed on the PC:
+
+- prepare a small ESP32-compatible test set;
+- convert the selected `.tflite` model into a C header file;
+- generate the ESP32-compatible test data header.
+
+At the end of this preparation, the ESP32 sketch must contain two generated header files:
+
+```text
+model_data.h
+esp32_test_data.h
+```
+
+---
+
+## Model header
+
+The file `model_data.h` contains the TFLite model converted into a C array.
+
+For the INT8 ESP32 test, the header is generated from:
+
+```text
+esp32_model_int8.tflite
+```
+
+The generated header must expose the model with the following names:
+
+
+
+## Files to copy into the Arduino sketch
+
+Copy the following files into the same Arduino sketch folder:
+
+```text
+code_esp32.ino
+model_data.h
+esp32_test_data.h
+```
+
+File roles:
+
+```text
+code_esp32.ino : ESP32 inference code
+model_data.h                : TFLite model converted to C header
+esp32_test_data.h           : ESP32-compatible test data
+```
+
+---
+
+## Running the ESP32 test
+
+Open the sketch in Arduino IDE or PlatformIO.
+
+Select the ESP32 board, for example:
+
+```text
+XIAO ESP32-C3
+```
+
+Upload the sketch to the ESP32.
+
+Then open the Serial Monitor with:
+
+```text
+115200 baud
+```
+
+The ESP32 prints the inference results.
+
 
 
 
